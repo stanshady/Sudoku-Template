@@ -1,0 +1,54 @@
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
+//Using a StackPane since they auto-center their children
+//and auto-size their window to fit their largest child.
+public class SudokuTile extends StackPane {
+
+    private final double WIDTH;
+    private final double HEIGHT;
+    private Rectangle boarder;
+
+    //text will store the digit to be displayed
+    private Text text;
+
+    //Contructor:  Notice it initializes instance variables
+    //and a bit more.  It also makes and displays a boarder,
+    //and specifies a mouse event.  All this together
+    //can be thought of as initializing all the data for this object
+    SudokuTile(double width, double height) {
+        WIDTH = width;
+        HEIGHT = height;
+        text = new Text();
+
+        //boarder also sets the size of the StackPane
+        //since it will be the largest child
+        boarder = new Rectangle(getTranslateX(), getTranslateY(), WIDTH, HEIGHT);
+
+        //setting Fill to null and then Stroke to BLACK
+        //displays only the boarder of the Rectangle
+        boarder.setFill(null);
+        boarder.setStroke(Color.BLACK);
+
+        //handle events from mouse clicks:
+        //Any code you put between { } will be run whenever
+        //any mouse button is clicked.  For example:
+        setOnMouseClicked(event -> {
+            int rand = (int) (Math.random() * 10);
+            setText(String.valueOf(rand));
+        });
+
+        //Make sure our StackPane has our nodes
+        getChildren().addAll(boarder, text);
+    }
+
+    //sets and therefore (in our case) also displays
+    //our digit in this SudokoTile
+    public void setText(String digit) {
+        text.setText(digit);
+        text.setFont(new Font(0.75 * WIDTH));
+    }
+}
