@@ -1,0 +1,64 @@
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
+
+
+public class SudokuBoard extends Pane {
+
+    //All sizes are scaled via TILE_WIDTH, TILE_HEIGHT
+    private final double TILE_WIDTH;
+    private final double TILE_HEIGHT;
+
+    //board stores the 9x9 grid of SudokuTiles
+    private SudokuTile[][] board;
+
+    SudokuBoard(double tileWidth, double tileHeight) {
+        TILE_WIDTH = tileWidth;
+        TILE_HEIGHT = tileHeight;
+        setPrefSize(9 * TILE_WIDTH, 9 * TILE_HEIGHT);
+        board = new SudokuTile[9][9];
+
+        //populate board with SudokuTiles
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                SudokuTile tile = new SudokuTile(TILE_WIDTH, TILE_HEIGHT);
+                tile.setTranslateX(row * TILE_WIDTH);
+                tile.setTranslateY(col * TILE_HEIGHT);
+                board[row][col] = tile;
+                getChildren().addAll(tile);
+            }
+        }
+
+        drawPattern();
+    }
+
+    //draws # pattern.
+    private void drawPattern() {
+        Line hor0 = new Line(0,
+                3 * TILE_HEIGHT,
+                9 * TILE_WIDTH,
+                3 * TILE_HEIGHT);
+        Line hor1 = new Line(0,
+                6 * TILE_HEIGHT,
+                9 * TILE_WIDTH,
+                6 * TILE_HEIGHT);
+        Line ver0 = new Line(3 * TILE_WIDTH,
+                0,
+                3 * TILE_WIDTH,
+                9 * TILE_HEIGHT);
+        Line ver1 = new Line(6 * TILE_WIDTH,
+                0,
+                6 * TILE_WIDTH,
+                9 * TILE_HEIGHT);
+        hor0.setStrokeWidth(TILE_WIDTH * 0.05);
+        hor1.setStrokeWidth(TILE_WIDTH * 0.05);
+        ver0.setStrokeWidth(TILE_WIDTH * 0.05);
+        ver1.setStrokeWidth(TILE_WIDTH * 0.05);
+
+        getChildren().addAll(hor0, hor1, ver0, ver1);
+    }
+
+    public SudokuTile[][] getBoard() {
+        return board;
+    }
+
+}
