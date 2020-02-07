@@ -37,7 +37,7 @@ public class SudokuTile extends StackPane {
         //Any code you put between { } will be run whenever
         //any mouse button is clicked.  For example:
         setOnMouseClicked(event -> {
-            int rand = (int) (Math.random() * 10);
+            int rand = (int) (Math.random() * 9) + 1;
             setText(String.valueOf(rand));
         });
 
