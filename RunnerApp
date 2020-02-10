@@ -1,36 +1,40 @@
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class RunnerApp extends Application {
 
-    //Every Scene needs a base Node from the Parent class
-    //that is not the child of any other Parent. I've seen this
-    //called the root. I chose a StackPane for the root.
     private StackPane root;
+    private SudokuBoard sudokuBoard;
 
-    //This will set up our first (and only) Scene
     private Parent setUpScene() {
         root = new StackPane();
 
         //Construct a SudokuBoard of 9*tileWidth by 9*tileHeight
-        //and add it as a child of root
-        SudokuBoard board = new SudokuBoard(100, 100);
+        sudokuBoard = new SudokuBoard(80, 80);
+        //Generate random solution
+        sudokuBoard.fillSudoku(0, 0, sudokuBoard.fillRandom());
 
-        root.getChildren().addAll(board);
+        root.getChildren().addAll(sudokuBoard);
+
+        //generate a new random solution on MIDDLE mouseClick
+        root.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.MIDDLE) {
+                sudokuBoard = new SudokuBoard(80, 80);
+                sudokuBoard.fillSudoku(0, 0, sudokuBoard.fillRandom());
+
+                root.getChildren().clear();
+                root.getChildren().addAll(sudokuBoard);
+            }
+        });
+
         return root;
     }
 
-    //The Application class is Abstract which means
-    //it has at least one unimplemented method, in this
-    //case the method start(). We must implement start()
-    //which is called when we run launch(args) in the main.
     public void start(Stage primaryStage) {
-        //A Stage requires a Scene.  Think of a Stage as the
-        //window boarder with the title, min, max, and close buttons.
-        //A Scene is what is displayed within the Stage.
         primaryStage.setScene(new Scene(setUpScene()));
         primaryStage.setTitle("Sudoku");
         primaryStage.show();
